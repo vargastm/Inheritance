@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import model.Individual;
 import model.Person;
 
@@ -84,6 +86,34 @@ public class IndividualDaoImpl implements Serializable {
             ConnectionFactory.closeConnection(connection, prepared);
         }
         return individual;
+    }
+    
+    public List<Individual> listByName(String name) {
+        String query = "SELECT * FROM person INNER JOIN individual ON person.idPerson = "
+                + "individual.idPerson WHERE name LIKE ?";
+        List data = new ArrayList<>();
+        try {
+            connection = ConnectionFactory.getConnection();
+            prepared = connection.prepareStatement(query);
+            prepared.setString(1, "%" + name + "%");
+            result = prepared.executeQuery();
+            while (result.next()) {
+                individual = new Individual();
+                individual.setId(result.getInt("individual.idPerson"));
+                individual.setIndividualRegistration(result.getString("individualRegistration"));
+                individual.setIdentityDocument(result.getString("identityDocument"));
+                individual.setName(result.getString("name"));
+                individual.setEmail(result.getString("email"));
+                individual.setPhone(result.getString("phone"));
+                individual.setDateOfBirth(result.getString("dateOfBirth"));
+                data.add(individual);
+            }
+        } catch (Exception e) {
+            System.out.println("ERRO AO PESQUISAR POR NOME " + e.getMessage());
+        } finally {
+            ConnectionFactory.closeConnection(connection, prepared, result);
+        }
+        return data;
     }
 }
 

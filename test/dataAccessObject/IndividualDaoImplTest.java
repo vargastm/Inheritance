@@ -1,5 +1,6 @@
 package dataAccessObject;
 
+import java.util.List;
 import model.Individual;
 
 /**
@@ -31,14 +32,14 @@ public class IndividualDaoImplTest {
         individualDaoImpl.change(individual);
     }
     
-    @org.junit.Test
+//    @org.junit.Test
     public void testDelete() {
         System.out.println("deletar");
         int id = 3;
         individualDaoImpl.delete(id);
     }
     
-    @org.junit.Test
+//    @org.junit.Test
     public void testListById() {
         System.out.println("pesquisar por id");
         individual = individualDaoImpl.listById(1);
@@ -49,5 +50,22 @@ public class IndividualDaoImplTest {
         System.out.println("Data de Nascimento: " + individual.getDateOfBirth());
         System.out.println("CPF: " + individual.getIndividualRegistration());
         System.out.println("RG: " + individual.getIdentityDocument());
+    }
+    
+    @org.junit.Test
+    public void testListByName() {
+        System.out.println("PESQUISAR POR NOME");
+        String name = "Nome";
+        List<Individual> data = individualDaoImpl.listByName(name);
+        for (Individual individual : data) {
+            System.out.println("ID: " + individual.getId());
+            System.out.println("CPF: " + individual.getIndividualRegistration());
+            System.out.println("RG: " + individual.getIdentityDocument());
+            System.out.println("Nome: " + individual.getName());
+            System.out.println("Email: " + individual.getEmail());
+            System.out.println("Telefone: " + individual.getPhone());
+            System.out.println("Data de Nascimento: " + individual.getDateOfBirth());
+            System.out.println();
+        }
     }
 }
